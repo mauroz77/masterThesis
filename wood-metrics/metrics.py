@@ -12,6 +12,7 @@ positions = []
 Calculate the centroid from a list of points. Returns a tuple with the result.
 '''
 def calculate_centroid(points):
+    #print("calculating centroid for ",points)
     sumx = 0.0
     sumy = 0.0
     sumz = 0.0
@@ -194,9 +195,11 @@ def p_prim_min(p_min_value):
     return res
 
 
-def print_metrics(filename):
+def get_metrics(filename):
     # Read the c betha residues from the pdb file
+    #print("Init get_metrics for "+ filename)
     positions = pdb_positions_reader.read_input_file(filename)
+    print("Read "+ str(len(positions)) + " positions")
 
     # Calculate the centroid
     centroid = calculate_centroid(positions)
@@ -225,50 +228,32 @@ def print_metrics(filename):
     # .rjust(padding,' ')
 
 
-    print("r_min\tp_min\tSR\tSLR\tr_prim_min\tp_prim_min")
+   # print("r_min\tp_min\tSR\tSLR\tr_prim_min\tp_prim_min")
 
-    print(str(round(r_min_val,5))+"\t"+str(round(p_min_val,5))+"\t"+
-          str(round(sum_ratios,5))
-          +"\t"+str(round(sum_log_ratios,5))+"\t"+str(round(binary_sum_ratios,5))
-          +"\t"+str(round(binary_p_min,5)))
+    '''metrics = str(round(r_min_val,5))+"\t"+str(round(p_min_val,5))+"\t"+\
+              str(round(sum_ratios,5))+"\t"+str(round(sum_log_ratios,5))+"\t"+str(round(binary_sum_ratios,5))+\
+              "\t"+str(round(binary_p_min,5))'''
+
+    metrics = str(round(r_min_val,5))+"|"+str(round(p_min_val,5))+"|"+\
+              str(round(sum_ratios,5))+"|"+str(round(sum_log_ratios,5))+"|"+str(round(binary_sum_ratios,5))+\
+              "|"+str(round(binary_p_min,5))
+
+    return metrics
+
+
+def print_metrics(filename):
+    print("r_min\tp_min\tSR\tSLR\tr_prim_min\tp_prim_min")
+    metrics = get_metrics(filename)
+    print(metrics)
 
 
 # Main del programa
-
+'''
+print("Called main metrics.py")
 if filename != "":
     print_metrics(filename)
-    '''
-    positions = pdb_positions_reader.read_input_file(filename)
-
-
-    print("Read: ", len(positions), " positions")
-
-    print("centroid: ", calculate_centroid(positions))
-
-    centroid = calculate_centroid(positions)
-
-    p_min = p_min(positions,centroid)
-
-    print("Pmin: ", p_min)
-
-
-    print("total: ", len(positions))
-
-    r_min_val = r_min(positions)
-
-    print("Ratio: ", r_min_val)
-
-    groups = divide_in_groups(positions)
-
-    print("Number of groups: ",len(groups))
-
-    print("RS: ",calculate_sr(groups))
-    print("RLS: ",calculate_slr(groups))
-    print("p_prim_min ", p_prim_min(p_min))
-    print("r_prim_min ", r_prim_min(r_min_val))
-    '''
-
-
 
 else:
     print("No file!.")
+    '''
+

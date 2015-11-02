@@ -1,4 +1,6 @@
 from sys import argv
+import os.path
+import sys
 
 __author__ = 'mauriciomartinezjimenez'
 '''
@@ -10,16 +12,24 @@ script, filename = argv
 positions = []
 
 def read_input_file(file):
-    my_file = open(filename,"r")
-    line = my_file.readline()
-    processLine(line)
+    try:
+        #print("pdb_positions_reader.read_input_file "+file)
+        #positions.count()
+        positions[:] = []
+        my_file = open(file,"r")
 
-    while line:
         line = my_file.readline()
         processLine(line)
-    my_file.close()
 
-    return positions
+        while line:
+            line = my_file.readline()
+            processLine(line)
+        my_file.close()
+
+        return positions
+
+    except IOError:
+        sys.exit("File ["+file + "] does not exist!")
 
 
 def line_contains_positions(splited_line):
@@ -37,3 +47,4 @@ def processLine(line):
     if len(elementsbyline) > 10:
         if(elementsbyline[0] == 'ATOM' and elementsbyline[2] == "CA"):
             positions.append((float(elementsbyline[6]), float(elementsbyline[7]), float(elementsbyline[8])))
+
